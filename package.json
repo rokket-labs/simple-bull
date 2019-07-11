@@ -2,7 +2,7 @@
   "name": "@rokketlabs/simple-bull",
   "version": "1.0.0",
   "description": "Functional programming wrapper for bull.js library",
-  "main": "./lib",
+  "main": "./dist",
   "type": "git",
   "repository": {
     "url": "git+https://github.com/rokket-labs/simple-bull.git"
@@ -17,7 +17,8 @@
   },
   "homepage": "https://github.com/rokket-labs/simple-bull#readme",
   "scripts": {
-    "start": "./node_modules/.bin/nodemon ./node_modules/.bin/babel-node src",
+    "start": "./node_modules/.bin/nodemon  ./node_modules/.bin/babel-node src",
+    "watch": "./node_modules/.bin/nodemon --watch src --exec npm run build",
     "test": "ava test",
     "build": "babel src -d dist",
     "prepublish": "npm run build",
@@ -39,7 +40,8 @@
     "nodemon": "1.19.1"
   },
   "dependencies": {
-    "bull": "3.10.0"
+    "bull": "3.10.0",
+    "signale": "^1.4.0"
   },
   "peerDependencies": {
     "bull": "3.x"

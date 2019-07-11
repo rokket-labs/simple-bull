@@ -1,28 +1,28 @@
-## Rokketlabs Node boilerplate
+## Rokketlabs Simple Bull
 
-Hola 👋 si quieres desarrollar cualquier cosa en node desde 0 y te da lata tener que hacer toda la investigación y configuración, te recomiendo este boilerplate que es de uso público.
+### Motivation
 
-Si quieres usarlo simplemente haz lo siguiente:
+Simple Bull te permite crear workers en node de forma sencilla, similar a lo que se puede hacer en serverless con los cron
 
-    git clone https://github.com/rokket-labs/node-es7-boilerplate.git [awesome-project-name]
-    cd [awesome-project-name]
-    npm install
+### Installation
 
-Para partirlo de forma local solo debes correr
+```
+  npm install -s @rokketlabs/simple-bull
+```
 
-    npm start
+```
+  yarn add @rokketlabs/simple-bull
+```
 
-Para hacer un build solo tienes que hacer lo siguiente
+### Code style
 
-    npm build
+Para este boilerplate usamos ES7 Standard
 
-Para testear
+**Built with**
 
-    npm test
+- [Bull](https://github.com/OptimalBits/bull)
 
-Puedes usar yarn como package manager, pero lo dejé lo más limpio posible por eso solo usa npm
+### License
 
-Cualquier cambio que requieras porfavor deja un issue de la forma más detallada posible 🤓
-
-Tome como referencia este [boilerplate
-](https://github.com/TylerGarlick/node-es7-boilerplate)
+Simple Bull lincence it's MIT, happy coding ;)
+MIT © [Roberto Zibert](https://medium.com/media/b9bbc4fe57d0fcb03deb64a4d0f537af?postId=7ac01da88ab3)
