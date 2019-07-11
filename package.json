@@ -1,0 +1,47 @@
+{
+  "name": "@rokketlabs/simple-bull",
+  "version": "1.0.0",
+  "description": "Functional programming wrapper for bull.js library",
+  "main": "./lib",
+  "type": "git",
+  "repository": {
+    "url": "git+https://github.com/rokket-labs/simple-bull.git"
+  },
+  "keywords": [
+    "workers"
+  ],
+  "author": "Robert Zibert",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/rokket-labs/simple-bull/issues"
+  },
+  "homepage": "https://github.com/rokket-labs/simple-bull#readme",
+  "scripts": {
+    "start": "./node_modules/.bin/nodemon ./node_modules/.bin/babel-node src",
+    "test": "ava test",
+    "build": "babel src -d dist",
+    "prepublish": "npm run build",
+    "restart": "rm -rf ./node_modules && npm install"
+  },
+  "devDependencies": {
+    "ava": "1.4.1",
+    "babel-cli": "6.26.0",
+    "babel-polyfill": "6.26.0",
+    "babel-preset-env": "1.7.0",
+    "babel-preset-es2017": "6.24.1",
+    "babel-register": "6.26.0",
+    "eslint": "5.16.0",
+    "eslint-config-standard": "12.0.0",
+    "eslint-plugin-import": "2.17.3",
+    "eslint-plugin-node": "9.1.0",
+    "eslint-plugin-promise": "4.1.1",
+    "eslint-plugin-standard": "4.0.0",
+    "nodemon": "1.19.1"
+  },
+  "dependencies": {
+    "bull": "3.10.0"
+  },
+  "peerDependencies": {
+    "bull": "3.x"
+  }
+}
