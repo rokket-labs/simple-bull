@@ -3,33 +3,38 @@ import redis from './redisConf'
 import signale from 'signale'
 import { successMessage, pendingMessage, errorMessage } from './logger'
 
+// Initialize a queue with workers
 const startQueue = async ({ queueName, workers }) => {
   signale.pending('Creating queue and connecting with redis')
   const queue = new Bull(queueName, { redis })
   signale.success('Queue correctly created')
-
-  await addJobs({ queue, workers })
+  await addJobsToQueue({ queue, workers })
 }
 
-const addJobs = async ({ queue, workers }) => {
-  for (const { name, processor, every, limit } of workers) {
+const addJobsToQueue = async ({ queue, workers }) => {
+  for (const {
+    name,
+    processor,
+    every,
+    limit,
+    onFailure,
+    onSuccess
+  } of workers) {
     await queue.add(name, { foo: 'bar' }, { repeat: { every, limit } })
 
     queue.process(name, (job, done) => {
       try {
         pendingMessage(job, 'executing job processor')
         processor()
+        if (onSuccess) onFailure(job, successMessage)
         successMessage(job, 'job executed correctly')
       } catch (error) {
-        errorMessage(job, error.message)
+        if (onFailure) onFailure(error, job, errorMessage)
+        errorMessage(job, error)
       }
       done()
     })
   }
-
-  queue.on('failed', function (job, error) {
-    errorMessage(job, error)
-  })
 }
 
 export { startQueue }

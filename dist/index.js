@@ -23,6 +23,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
+// Initialize a queue with workers
 var startQueue = function () {
   var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(_ref) {
     var queueName = _ref.queueName,
@@ -36,9 +37,8 @@ var startQueue = function () {
             queue = new _bull2.default(queueName, { redis: _redisConf2.default });
 
             _signale2.default.success('Queue correctly created');
-
             _context.next = 5;
-            return addJobs({ queue: queue, workers: workers });
+            return addJobsToQueue({ queue: queue, workers: workers });
 
           case 5:
           case 'end':
@@ -53,18 +53,18 @@ var startQueue = function () {
   };
 }();
 
-var addJobs = function () {
+var addJobsToQueue = function () {
   var _ref4 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(_ref3) {
     var queue = _ref3.queue,
         workers = _ref3.workers;
 
-    var _loop, _iteratorNormalCompletion, _didIteratorError, _iteratorError, _iterator, _step, _ref5, name, processor, every, limit;
+    var _loop, _iteratorNormalCompletion, _didIteratorError, _iteratorError, _iterator, _step, _ref5, name, processor, every, limit, onFailure, onSuccess;
 
     return regeneratorRuntime.wrap(function _callee2$(_context3) {
       while (1) {
         switch (_context3.prev = _context3.next) {
           case 0:
-            _loop = /*#__PURE__*/regeneratorRuntime.mark(function _loop(name, processor, every, limit) {
+            _loop = /*#__PURE__*/regeneratorRuntime.mark(function _loop(name, processor, every, limit, onFailure, onSuccess) {
               return regeneratorRuntime.wrap(function _loop$(_context2) {
                 while (1) {
                   switch (_context2.prev = _context2.next) {
@@ -78,9 +78,11 @@ var addJobs = function () {
                         try {
                           (0, _logger.pendingMessage)(job, 'executing job processor');
                           processor();
+                          if (onSuccess) onFailure(job, _logger.successMessage);
                           (0, _logger.successMessage)(job, 'job executed correctly');
                         } catch (error) {
-                          (0, _logger.errorMessage)(job, error.message);
+                          if (onFailure) onFailure(error, job, _logger.errorMessage);
+                          (0, _logger.errorMessage)(job, error);
                         }
                         done();
                       });
@@ -100,7 +102,7 @@ var addJobs = function () {
 
           case 6:
             if (_iteratorNormalCompletion = (_step = _iterator.next()).done) {
-              _context3.next = 16;
+              _context3.next = 18;
               break;
             }
 
@@ -109,62 +111,58 @@ var addJobs = function () {
             processor = _ref5.processor;
             every = _ref5.every;
             limit = _ref5.limit;
-            return _context3.delegateYield(_loop(name, processor, every, limit), 't0', 13);
+            onFailure = _ref5.onFailure;
+            onSuccess = _ref5.onSuccess;
+            return _context3.delegateYield(_loop(name, processor, every, limit, onFailure, onSuccess), 't0', 15);
 
-          case 13:
+          case 15:
             _iteratorNormalCompletion = true;
             _context3.next = 6;
             break;
 
-          case 16:
-            _context3.next = 22;
+          case 18:
+            _context3.next = 24;
             break;
 
-          case 18:
-            _context3.prev = 18;
+          case 20:
+            _context3.prev = 20;
             _context3.t1 = _context3['catch'](4);
             _didIteratorError = true;
             _iteratorError = _context3.t1;
 
-          case 22:
-            _context3.prev = 22;
-            _context3.prev = 23;
+          case 24:
+            _context3.prev = 24;
+            _context3.prev = 25;
 
             if (!_iteratorNormalCompletion && _iterator.return) {
               _iterator.return();
             }
 
-          case 25:
-            _context3.prev = 25;
+          case 27:
+            _context3.prev = 27;
 
             if (!_didIteratorError) {
-              _context3.next = 28;
+              _context3.next = 30;
               break;
             }
 
             throw _iteratorError;
 
-          case 28:
-            return _context3.finish(25);
-
-          case 29:
-            return _context3.finish(22);
-
           case 30:
-
-            queue.on('failed', function (job, error) {
-              (0, _logger.errorMessage)(job, error);
-            });
+            return _context3.finish(27);
 
           case 31:
+            return _context3.finish(24);
+
+          case 32:
           case 'end':
             return _context3.stop();
         }
       }
-    }, _callee2, undefined, [[4, 18, 22, 30], [23,, 25, 29]]);
+    }, _callee2, undefined, [[4, 20, 24, 32], [25,, 27, 31]]);
   }));
 
-  return function addJobs(_x2) {
+  return function addJobsToQueue(_x2) {
     return _ref4.apply(this, arguments);
   };
 }();
