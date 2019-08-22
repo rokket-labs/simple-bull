@@ -26,7 +26,7 @@ const addJobsToQueue = async ({ queue, workers }) => {
       try {
         pendingMessage(job, 'executing job processor')
         processor()
-        if (onSuccess) onFailure(job, successMessage)
+        if (onSuccess) onSuccess(job, successMessage)
         successMessage(job, 'job executed correctly')
       } catch (error) {
         if (onFailure) onFailure(error, job, errorMessage)
