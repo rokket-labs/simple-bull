@@ -1,3 +1,6 @@
+import 'core-js/stable'
+import 'regenerator-runtime/runtime'
+
 import Bull from 'bull'
 import redis from './redisConf'
 import signale from 'signale'
@@ -11,22 +14,32 @@ const startQueue = async ({ queueName, workers }) => {
   await addJobsToQueue({ queue, workers })
 }
 
+const getFrecuency = frequency => {
+  if (typeof frequency === 'number') return { every: frequency }
+  return { cron: frequency }
+}
+
 const addJobsToQueue = async ({ queue, workers }) => {
   for (const {
     name,
     processor,
-    every,
+    frequency,
     limit,
+    delay,
     onFailure,
     onSuccess
   } of workers) {
-    await queue.add(name, { foo: 'bar' }, { repeat: { every, limit } })
+    await queue.add(
+      name,
+      { foo: 'bar' },
+      { repeat: { ...getFrecuency(frequency), limit, delay } }
+    )
 
     queue.process(name, (job, done) => {
       try {
         pendingMessage(job, 'executing job processor')
         processor()
-        if (onSuccess) onFailure(job, successMessage)
+        if (onSuccess) onSuccess(job, successMessage)
         successMessage(job, 'job executed correctly')
       } catch (error) {
         if (onFailure) onFailure(error, job, errorMessage)
