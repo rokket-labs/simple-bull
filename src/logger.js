@@ -32,7 +32,7 @@ const pendingMessage = (job, message) => {
 }
 const errorMessage = (job, message) => {
   const msg = signale.scope(getUTCDate(), getUTCTime(), job.name)
-  msg.fatal(new Error(message))
+  msg.fatal(message)
 }
 
 export { successMessage, pendingMessage, errorMessage }

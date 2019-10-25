@@ -58,7 +58,7 @@ exports.pendingMessage = pendingMessage;
 var errorMessage = function errorMessage(job, message) {
   var msg = _signale["default"].scope(getUTCDate(), getUTCTime(), job.name);
 
-  msg.fatal(new Error(message));
+  msg.fatal(message);
 };
 
 exports.errorMessage = errorMessage;
