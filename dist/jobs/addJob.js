@@ -17,7 +17,7 @@ require("regenerator-runtime/runtime");
 
 var _addProcess = _interopRequireDefault(require("./addProcess"));
 
-var _getTicker = _interopRequireDefault(require("./getTicker"));
+var _getOptions = _interopRequireDefault(require("./getOptions"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -33,30 +33,23 @@ function _ref2() {
   _ref2 = _asyncToGenerator(
   /*#__PURE__*/
   regeneratorRuntime.mark(function _callee(_ref) {
-    var queue, job, name, data, ticker;
+    var queue, job, name, data, options;
     return regeneratorRuntime.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
             queue = _ref.queue, job = _ref.job;
-            name = job.name, data = job.data; // Build ticker object
-
-            ticker = (0, _getTicker["default"])(job); // Attach job function to queue
+            name = job.name, data = job.data;
+            options = (0, _getOptions["default"])(job); // Attach job function to queue
 
             (0, _addProcess["default"])({
               queue: queue,
               job: job
             });
+            _context.next = 6;
+            return queue.add(name, data, options);
 
-            if (!ticker) {
-              _context.next = 7;
-              break;
-            }
-
-            _context.next = 7;
-            return queue.add(name, data, ticker);
-
-          case 7:
+          case 6:
           case "end":
             return _context.stop();
         }

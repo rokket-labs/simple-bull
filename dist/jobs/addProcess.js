@@ -21,7 +21,7 @@ function _default(_ref) {
   queue.process(name, function (job, done) {
     try {
       (0, _logger.pendingMessage)(job, 'executing job processor');
-      processor();
+      processor(job.data);
       if (!onSuccess) (0, _logger.successMessage)(job, 'job executed correctly');
       onSuccess(job, _logger.successMessage);
     } catch (error) {

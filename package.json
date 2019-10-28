@@ -37,7 +37,8 @@
     "@babel/node": "7.5.5",
     "@babel/preset-env": "7.5.5",
     "@babel/register": "7.5.5",
-    "nodemon": "1.19.1"
+    "nodemon": "1.19.1",
+    "eslint-utils": ">=1.4.1"
   },
   "dependencies": {
     "bull": "3.10.0",
