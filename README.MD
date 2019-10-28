@@ -32,8 +32,8 @@ La parte central de todos los workers son las colas, estas se registran en redis
 import { initQueue } from '@rokketlabs/simple-bull'
 
 initQueue({
-	queueName: 'email-queue'
-	jobs:[sendEmail, checkEmail]
+  queueName: 'email-queue'
+  jobs:[sendEmail, checkEmail]
 })
 ```
 
