@@ -1,5 +1,5 @@
 export default function (job) {
-  const { frequency, delay, limit } = job
+  const { frequency, limit } = job
   const isNumber = frequency => typeof frequency === 'number'
 
   let frequencyType
@@ -11,5 +11,5 @@ export default function (job) {
     ? { every: frequency }
     : { cron: frequency }
 
-  return { repeat: { ...frequencyType, limit, delay } }
+  return { repeat: { ...frequencyType, limit } }
 }

@@ -6,7 +6,7 @@ export default function ({ queue, job }) {
   queue.process(name, (job, done) => {
     try {
       pendingMessage(job, 'executing job processor')
-      processor()
+      processor(job.data)
       if (!onSuccess) successMessage(job, 'job executed correctly')
       onSuccess(job, successMessage)
     } catch (error) {
