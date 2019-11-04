@@ -9,5 +9,6 @@ export default async function ({ queue, job }) {
   // Attach job function to queue
   addProcess({ queue, job })
 
+  if (!options.frequency) return
   await queue.add(name, data, options)
 }

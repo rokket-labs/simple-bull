@@ -1,12 +1,13 @@
 import { successMessage, pendingMessage, errorMessage } from '../logger'
+// import { lock, unlock } from '../mutex'
 
 export default function ({ queue, job }) {
   const { processor, onFailure, onSuccess, name } = job
 
-  queue.process(name, (job, done) => {
+  queue.process(name, async (job, done) => {
     try {
       pendingMessage(job, 'executing job processor')
-      processor(job.data)
+      await processor(job.data)
       if (!onSuccess) successMessage(job, 'job executed correctly')
       onSuccess(job, successMessage)
     } catch (error) {
