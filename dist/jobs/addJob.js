@@ -46,19 +46,21 @@ function _ref2() {
               queue: queue,
               job: job
             });
+            console.log(options);
 
-            if (options.frequency) {
-              _context.next = 6;
+            if (job.frequency) {
+              _context.next = 7;
               break;
             }
 
             return _context.abrupt("return");
 
-          case 6:
-            _context.next = 8;
+          case 7:
+            console.log(options);
+            _context.next = 10;
             return queue.add(name, data, options);
 
-          case 8:
+          case 10:
           case "end":
             return _context.stop();
         }

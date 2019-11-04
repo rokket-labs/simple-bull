@@ -1,5 +1,4 @@
 import { successMessage, pendingMessage, errorMessage } from '../logger'
-// import { lock, unlock } from '../mutex'
 
 export default function ({ queue, job }) {
   const { processor, onFailure, onSuccess, name } = job
