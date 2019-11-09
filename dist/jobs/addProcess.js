@@ -25,48 +25,36 @@ function _default(_ref) {
   var queue = _ref.queue,
       job = _ref.job;
   var processor = job.processor,
-      onFailure = job.onFailure,
-      onSuccess = job.onSuccess,
-      name = job.name;
+      name = job.name; // This is the asynchronous way to proccess a job
+
   queue.process(name,
   /*#__PURE__*/
   function () {
     var _ref2 = _asyncToGenerator(
     /*#__PURE__*/
-    regeneratorRuntime.mark(function _callee(job, done) {
+    regeneratorRuntime.mark(function _callee(job) {
       return regeneratorRuntime.wrap(function _callee$(_context) {
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
               _context.prev = 0;
               (0, _logger.pendingMessage)(job, 'executing job processor');
-              _context.next = 4;
-              return processor(job.data);
+              return _context.abrupt("return", processor(job.data));
 
-            case 4:
-              if (!onSuccess) (0, _logger.successMessage)(job, 'job executed correctly');
-              onSuccess(job, _logger.successMessage);
-              _context.next = 12;
-              break;
+            case 5:
+              _context.prev = 5;
+              _context.t0 = _context["catch"](0);
+              return _context.abrupt("return", _context.t0);
 
             case 8:
-              _context.prev = 8;
-              _context.t0 = _context["catch"](0);
-              if (!onFailure) (0, _logger.errorMessage)(job, _context.t0);
-              onFailure(_context.t0, job, _logger.errorMessage);
-
-            case 12:
-              done();
-
-            case 13:
             case "end":
               return _context.stop();
           }
         }
-      }, _callee, null, [[0, 8]]);
+      }, _callee, null, [[0, 5]]);
     }));
 
-    return function (_x, _x2) {
+    return function (_x) {
       return _ref2.apply(this, arguments);
     };
   }());

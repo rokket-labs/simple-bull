@@ -19,8 +19,7 @@ const getUTCTime = () => {
 const successMessage = (job, message) => {
   const msg = signale.scope(getUTCDate(), getUTCTime(), job.name)
   msg.success({
-    message,
-    suffix: `[${job.name}]`
+    message: message || 'executed successfully'
   })
 }
 

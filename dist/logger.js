@@ -38,8 +38,7 @@ var successMessage = function successMessage(job, message) {
   var msg = _signale["default"].scope(getUTCDate(), getUTCTime(), job.name);
 
   msg.success({
-    message: message,
-    suffix: "[".concat(job.name, "]")
+    message: message || 'executed successfully'
   });
 };
 

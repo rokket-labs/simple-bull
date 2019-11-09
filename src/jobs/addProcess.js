@@ -1,18 +1,15 @@
-import { successMessage, pendingMessage, errorMessage } from '../logger'
+import { pendingMessage } from '../logger'
 
 export default function ({ queue, job }) {
-  const { processor, onFailure, onSuccess, name } = job
+  const { processor, name } = job
 
-  queue.process(name, async (job, done) => {
+  // This is the asynchronous way to proccess a job
+  queue.process(name, async job => {
     try {
       pendingMessage(job, 'executing job processor')
-      await processor(job.data)
-      if (!onSuccess) successMessage(job, 'job executed correctly')
-      onSuccess(job, successMessage)
+      return processor(job.data)
     } catch (error) {
-      if (!onFailure) errorMessage(job, error)
-      onFailure(error, job, errorMessage)
+      return error
     }
-    done()
   })
 }

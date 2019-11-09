@@ -37,6 +37,7 @@ function _ref2() {
         switch (_context.prev = _context.next) {
           case 0:
             queueName = _ref.queueName, jobName = _ref.jobName, data = _ref.data;
+            // Open redis connection
             queue = new _bull["default"](queueName, {
               redis: _redisConf["default"]
             });
@@ -44,6 +45,10 @@ function _ref2() {
             return queue.add(jobName, data);
 
           case 4:
+            // Close redis connection
+            queue.close();
+
+          case 5:
           case "end":
             return _context.stop();
         }

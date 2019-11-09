@@ -40,27 +40,28 @@ function _ref2() {
           case 0:
             queue = _ref.queue, job = _ref.job;
             name = job.name, data = job.data;
-            options = (0, _getOptions["default"])(job); // Attach job function to queue
+            options = (0, _getOptions["default"])({
+              job: job,
+              queue: queue
+            }); // Attach job function to queue
 
             (0, _addProcess["default"])({
               queue: queue,
               job: job
             });
-            console.log(options);
 
             if (job.frequency) {
-              _context.next = 7;
+              _context.next = 6;
               break;
             }
 
             return _context.abrupt("return");
 
-          case 7:
-            console.log(options);
-            _context.next = 10;
+          case 6:
+            _context.next = 8;
             return queue.add(name, data, options);
 
-          case 10:
+          case 8:
           case "end":
             return _context.stop();
         }

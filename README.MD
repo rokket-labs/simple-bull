@@ -1,12 +1,24 @@
 # Simple Bull
 
-Librería para crear Jobs estables de forma muy simple
+Librería para crear Jobs super estables de forma muy simple
 
-### Prerequisitos
+# Motivación
+
+Bull.js es la librería más completa para hacer workers en node, es bastante ligera y ocupa un sistema de eventos que permite manipular un job en todas las etapas, sin embargo, programar un job de forma correcta en bull es un poco complejo, esta librería la hice con el fin de reducir esa dificultad, pero conservar al máximo las funcionalidades de bull
+
+# Prerequisitos
 
 Simple bull es una librería de Node que usa Redis como sistema de cola, por lo tanto, antes de comenzar asegurate de tener Redis instalado de forma local.
 
-### Instalación
+Debes configurar las siguientes variables de ambiente en tu proyecto:
+
+```sh
+export REDIS_HOST='your-redis-host'
+export REDIS_PORT='your-redis-port'
+export REDIS_PASSWORD='your-redis-pass'
+```
+
+# Instalación
 
 Usando npm:
 
@@ -20,73 +32,121 @@ Usando yarn:
 yarn add @rokketlabs/simple-bull
 ```
 
-### Uso
+# Uso
 
-Simple Bull es una librería que permite que te permite hacer workers de forma sencilla para que solo te preocupes de tu código, y no de que los jobs se ejecuten de forma correcta.
-
-La parte central de todos los workers son las colas, estas se registran en redis, y a cada cola se le pueden asignar todos los workers que desees:
+El core de todos los workers son las colas, estas se registran en redis, y a cada cola se le pueden asignar todos los workers que desees:
 
 #### Registro de colas
 
 ```js
-import { initQueue } from '@rokketlabs/simple-bull'
+import { initQueue } from '@rokketlabs/simple-bull';
 
 initQueue({
-  queueName: 'email-queue'
-  jobs:[sendEmail, checkEmail]
-})
+  queueName: 'email-queue',
+  jobs: [sendEmail, checkEmail]
+});
 ```
 
-En este caso la cola `email-queue` se registra en redis cuando se levante el servidor, y asociada a esta cola se encuentra los jobs sendEmail y checkEmail.
+Se registra la cola `email-queue` en redis cada vez que el servidor se levanta, esta cola se encarga de orquestar los jobs `sendEmail` y `checkEmail`.
 
-#### Jobs Recurrentes
+#### Recurrent Jobs
 
 ```js
-import checkEmail from './checkEmail'
+import checkEmail from './checkEmail';
 
 export default {
-	name: 'checkEmail',    // Nombre del job
-	processor: checkEmail, // Función que se desea ejecutar
-	frequency: 5000        // Recurrencia del job
-	delay: 1000			   // Tiempo de espera
-	limit: 10000           // Duración máxima del job
-	onSuccess: (currentJob, logger) => {
-		logger(`${currentJob.name} success !!`)
-	}
-}
+  name: 'checkEmail', // Nombre del job
+  processor: checkEmail, // Función que se ejecuta el job
+  frequency: 5000, // Recurrencia en ms del job
+  delay: 1000, // Tiempo de espera
+  limit: 10000 // Límite de repeticiones del job
+};
 ```
 
-Los jobs recurrentes se usan cuando se desea ejecutar una función cada cierto tiempo, en este ejemplo, el job para revisar emails se ejecuta cada 5 segundos, esperando 1 segundo para comenzar la ejecución, y cuando este tome más de 10 segundos simple-bull mata el proceso ya que le pusimos un límite de 10000 ms.
+Los jobs recurrentes ejecutan una función cada cierto tiempo, en este ejemplo, el job ejecuta una función que revisa emails, se ejecuta cada 5 segundos y espera 1 segundo antes de comenzar la ejecución.
 
-Además existen dos hooks que permiten ejecutar más funciones de acuerdo al resultado del job, en este caso si se ejecuta de forma correcta lanza un mensaje personalizado.
-
-#### Jobs de Eventos
+#### Event Jobs
 
 ```js
 import sendEmail from './sendEmail';
 
 export default {
   name: 'sendEmail', // Nombre del job
-  processor: sendEmail, // Función que se desea ejecutar
-  onSuccess: (currentJob, logger) => {
-    logger(`${currentJob.name} success !!`);
+  processor: sendEmail // Función que se desea ejecutar
+};
+```
+
+Cuando un job no tiene el parametro `frequency`, simple-bull lo deja disponible para ser llamado de forma remota.
+
+```js
+import { fireJob } from '@rokketlabs/simple-bull';
+
+await fireJob({
+  queueName: 'email-queue',
+  jobName: 'send-email',
+  data: { email: 'john@doe.com', message: 'Hi' }
+});
+```
+
+Para dispararlo de forma remota desde otro servidor, configurar las variables de ambiente para apuntar al mismo redis, y usar la función `fireJob` la cual deja un evento en cola.
+
+#### Custom Hooks
+
+En algunos casos es necesario tener control de lo que ocurre luego de la ejecución de un job, simple-bull resuelve esto en dos niveles
+
+#### Queue Hooks
+
+```js
+import { initQueue } from '@rokketlabs/simple-bull';
+
+initQueue({
+  queueName: 'email-queue',
+  onSuccess: ({ result, job, successMessage }) => {
+    // execute code
+  },
+  onFail: ({ err, job, errorMessage }) => {
+    // execute code
+  },
+  jobs: [sendEmail, checkEmail]
+});
+```
+
+Cada vez que `sendEmail` y `checkEmail` se hayan ejecutado, alguno de los dos hooks se dispara y con esto puedes realizar acciones después de la ejecución.
+
+#### Job Hooks
+
+```js
+import checkEmail from './checkEmail';
+
+export default {
+  name: 'checkEmail', // Nombre del job
+  processor: checkEmail, // Función que se ejecuta el job
+  frequency: 5000, // Recurrencia en ms del job
+  delay: 1000, // Tiempo de espera
+  limit: 10000, // Límite de repeticiones del job
+  onSuccess: ({ result, job, successMessage }) => {
+    // execute code
+  },
+  onFail: ({ err, job, errorMessage }) => {
+    // execute code
   }
 };
 ```
 
-Para dejar Jobs disponibles de forma remota, solamente debes remover el atributo frequency, de esta forma simple-bull asume que es un job que solamente se puede activar a través de eventos, para dispararlo de forma remota solamente debes apuntar al mismo redis que el job y llamar la siguiente funcion
+Cada vez que `checkEmail` se ejecute, alguno de los dos hooks se dispara y con esto puedes realizar acciones después de la ejecución de este job específico.
+
+**Important Notes**:
+
+Cada vez que utilizas alguno de los dos hooks, simple-bull dejará de mostrar los logs por defecto de exito o error en el job o la cola que hayas activado los hooks, dado que le pasa el contro a tus funciones, tu te tienes que encargar de loggear correctamente el resultado de las funciones.
+
+#### Loggers
+
+Las funciones `successMessage` y `errorMessage` son loggers que tienen un estilo mucho más legible para usarlas necesitan los siguientes parámetros:
 
 ```js
-import {fireJob} from '@rokketlabs/simple-bull'
-
-await fireJob({
-	queueName: 'email-queue',
-	jobName: 'send-email'
-	data: {email: 'x@x.x', message: 'Hi'}
-})
+successMessage(job: JobObject, message: string)
+errorMessage(job: JobObject, message: string)
 ```
-
-En este caso otro servidor activa el job send-email, con el mensaje que desea enviar.
 
 ## Hecho con:
 
