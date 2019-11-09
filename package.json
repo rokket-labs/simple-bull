@@ -8,7 +8,10 @@
     "url": "git+https://github.com/rokket-labs/simple-bull.git"
   },
   "keywords": [
-    "workers"
+    "workers",
+    "bull",
+    "jobs",
+    "microservices"
   ],
   "author": "Robert Zibert",
   "license": "MIT",

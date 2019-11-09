@@ -148,15 +148,24 @@ successMessage(job: JobObject, message: string)
 errorMessage(job: JobObject, message: string)
 ```
 
-## Hecho con:
+# TODO:
+
+- [ ] Implementar tests.
+- [ ] Implementar tests coverage.
+- [ ] Documentación en Inglés.
+- [ ] Reusar las conexiones en redis.
+- [ ] Implementar jobs concurrentes.
+- [ ] Implementar timeLimit.
+
+# Hecho con:
 
 - [Bull](https://github.com/OptimalBits/bull) - Libería de Jobs
 
-## Autor
+# Autor
 
 - **[Roberto Zibert](https://github.com/robertzibert)**
 
-## License
+# License
 
 Simple Bull lincence it's MIT, happy coding ;)
-MIT © [Roberto Zibert](https://medium.com/media/b9bbc4fe57d0fcb03deb64a4d0f537af?postId=7ac01da88ab3)
+[Roberto Zibert](https://github.com/rokket-labs/simple-bull/blob/master/LICENCE) ©
