@@ -52,13 +52,9 @@ function _ref2() {
               redis: _redisConf["default"]
             });
             _context.next = 5;
-            return queue.clean(0);
-
-          case 5:
-            _context.next = 7;
             return queue.empty();
 
-          case 7:
+          case 5:
             // Queue events
             (0, _onFailed["default"])({
               queue: queue,
@@ -73,13 +69,13 @@ function _ref2() {
 
             _signale["default"].success("Queue ".concat(queueName, " correctly created"));
 
-            _context.next = 12;
+            _context.next = 10;
             return (0, _addJobs["default"])({
               queue: queue,
               jobs: jobs
             });
 
-          case 12:
+          case 10:
           case "end":
             return _context.stop();
         }

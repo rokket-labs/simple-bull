@@ -15,7 +15,6 @@ export default async function ({
   signale.pending('Creating queue and connecting with redis')
 
   const queue = new Bull(queueName, { redis })
-  await queue.clean(0)
   await queue.empty()
   // Queue events
   onFailed({ queue, jobs, queueOnFail })
