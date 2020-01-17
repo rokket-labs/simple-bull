@@ -44,10 +44,16 @@ function _default(job) {
     every: frequency
   } : {
     cron: frequency
-  };
+  }; // Remove on complete
+
+  var removeOnComplete = true; // Remove on finishing
+
+  var removeOnFail = true;
   return {
     repeat: _objectSpread({}, frequencyType, {
       limit: limit
-    })
+    }),
+    removeOnComplete: removeOnComplete,
+    removeOnFail: removeOnFail
   };
 }

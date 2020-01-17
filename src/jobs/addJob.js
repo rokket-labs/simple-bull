@@ -10,6 +10,6 @@ export default async function ({ queue, job }) {
   addProcess({ queue, job })
 
   if (!job.frequency) return
-
+  console.log('adding')
   await queue.add(name, data, options)
 }

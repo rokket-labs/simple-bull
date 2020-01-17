@@ -50,28 +50,36 @@ function _ref2() {
 
             queue = new _bull["default"](queueName, {
               redis: _redisConf["default"]
-            }); // Queue events
-
-            (0, _onComplete["default"])({
-              queue: queue,
-              jobs: jobs,
-              queueOnSuccess: queueOnSuccess
             });
+            _context.next = 5;
+            return queue.clean(0);
+
+          case 5:
+            _context.next = 7;
+            return queue.empty();
+
+          case 7:
+            // Queue events
             (0, _onFailed["default"])({
               queue: queue,
               jobs: jobs,
               queueOnFail: queueOnFail
             });
+            (0, _onComplete["default"])({
+              queue: queue,
+              jobs: jobs,
+              queueOnSuccess: queueOnSuccess
+            });
 
             _signale["default"].success("Queue ".concat(queueName, " correctly created"));
 
-            _context.next = 8;
+            _context.next = 12;
             return (0, _addJobs["default"])({
               queue: queue,
               jobs: jobs
             });
 
-          case 8:
+          case 12:
           case "end":
             return _context.stop();
         }

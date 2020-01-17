@@ -11,5 +11,11 @@ export default function (job) {
     ? { every: frequency }
     : { cron: frequency }
 
-  return { repeat: { ...frequencyType, limit } }
+  // Remove on complete
+  const removeOnComplete = true
+
+  // Remove on finishing
+  const removeOnFail = true
+
+  return { repeat: { ...frequencyType, limit }, removeOnComplete, removeOnFail }
 }

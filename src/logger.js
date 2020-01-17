@@ -1,8 +1,7 @@
 import signale from 'signale'
 
-let now = new Date()
-
 const getUTCDate = () => {
+  let now = new Date()
   const month = now.getUTCMonth() + 1 // months from 1-12
   const day = now.getUTCDate()
   const year = now.getUTCFullYear()
@@ -10,6 +9,7 @@ const getUTCDate = () => {
 }
 
 const getUTCTime = () => {
+  let now = new Date()
   const minutes = now.getMinutes()
   const hours = now.getHours()
   const seconds = now.getSeconds()

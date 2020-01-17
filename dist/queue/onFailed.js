@@ -18,6 +18,8 @@ function _default(_ref) {
       jobs = _ref.jobs,
       queueOnFail = _ref.queueOnFail;
   queue.on('failed', function (currentJob, err) {
+    console.log('simple bull failing');
+
     var findJobByName = function findJobByName(_ref2) {
       var name = _ref2.name;
       return name === currentJob.name;

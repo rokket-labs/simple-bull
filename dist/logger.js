@@ -17,9 +17,8 @@ var _signale = _interopRequireDefault(require("signale"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
-var now = new Date();
-
 var getUTCDate = function getUTCDate() {
+  var now = new Date();
   var month = now.getUTCMonth() + 1; // months from 1-12
 
   var day = now.getUTCDate();
@@ -28,6 +27,7 @@ var getUTCDate = function getUTCDate() {
 };
 
 var getUTCTime = function getUTCTime() {
+  var now = new Date();
   var minutes = now.getMinutes();
   var hours = now.getHours();
   var seconds = now.getSeconds();

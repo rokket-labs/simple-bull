@@ -58,10 +58,11 @@ function _ref2() {
             return _context.abrupt("return");
 
           case 6:
-            _context.next = 8;
+            console.log('adding');
+            _context.next = 9;
             return queue.add(name, data, options);
 
-          case 8:
+          case 9:
           case "end":
             return _context.stop();
         }

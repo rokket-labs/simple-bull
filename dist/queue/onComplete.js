@@ -18,6 +18,8 @@ function _default(_ref) {
       jobs = _ref.jobs,
       queueOnSuccess = _ref.queueOnSuccess;
   queue.on('completed', function (currentJob, result) {
+    console.log(currentJob.name, 'completed');
+
     var findJobByName = function findJobByName(_ref2) {
       var name = _ref2.name;
       return name === currentJob.name;
@@ -39,8 +41,9 @@ function _default(_ref) {
         job: currentJob,
         successMessage: _logger.successMessage
       });
-    } // If they decide to handle success event they have to return the message
+    }
 
+    currentJob.remove(); // If they decide to handle success event they have to return the message
 
     if (queueOnSuccess || firedJob.onSuccess) return;
     return (0, _logger.successMessage)(currentJob, result);

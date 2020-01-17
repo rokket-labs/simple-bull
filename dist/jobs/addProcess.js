@@ -37,21 +37,16 @@ function _default(_ref) {
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
-              _context.prev = 0;
               (0, _logger.pendingMessage)(job, 'executing job processor');
-              return _context.abrupt("return", processor(job.data));
+              _context.next = 3;
+              return processor(job.data);
 
-            case 5:
-              _context.prev = 5;
-              _context.t0 = _context["catch"](0);
-              return _context.abrupt("return", _context.t0);
-
-            case 8:
+            case 3:
             case "end":
               return _context.stop();
           }
         }
-      }, _callee, null, [[0, 5]]);
+      }, _callee);
     }));
 
     return function (_x) {
