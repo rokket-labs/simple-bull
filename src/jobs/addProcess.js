@@ -6,6 +6,6 @@ export default function ({ queue, job }) {
   // This is the asynchronous way to proccess a job
   queue.process(name, async job => {
     pendingMessage(job, 'executing job processor')
-    await processor(job.data)
+    return processor(job.data)
   })
 }

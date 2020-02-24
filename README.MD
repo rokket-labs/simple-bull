@@ -4,12 +4,12 @@ Librería para crear Jobs super estables de forma muy simple
 
 # Motivación
 
-Bull.js es la librería más completa para hacer workers en node, es bastante ligera y ocupa un sistema de eventos que permite manipular un job en todas las etapas, sin embargo, programar un job de forma correcta en bull es un poco complejo, esta librería la hice con el fin de reducir esa dificultad, pero conservar al máximo las funcionalidades de bull
+Bull.js es la librería más completa para hacer workers en node, es bastante ligera y ocupa un sistema de eventos que permite manipular un job en todas las etapas, sin embargo, programar un job de forma correcta en bull es un poco complejo, esta librería la hice con el fin de reducir esa dificultad, pero conservar al máximo las funcionalidades de bull.
+También esta librería esta pensada para poder programar microservicios en Node siguiendo buenas prácticas y manteniendo el código lo más ordenado posible.
 
 # Prerequisitos
 
-Simple bull es una librería de Node que usa Redis como sistema de cola, por lo tanto, antes de comenzar asegurate de tener Redis instalado de forma local.
-
+Simple bull es una librería de Node que usa Redis como sistema de cola, por lo tanto, antes de comenzar asegurate de tener Redis instalado de forma local o uno de forma remota.
 Debes configurar las siguientes variables de ambiente en tu proyecto:
 
 ```sh
@@ -55,11 +55,11 @@ Se registra la cola `email-queue` en redis cada vez que el servidor se levanta, 
 import checkEmail from './checkEmail';
 
 export default {
-  name: 'checkEmail', // Nombre del job
+  name: 'checkEmail',    // Nombre del job
   processor: checkEmail, // Función que se ejecuta el job
-  frequency: 5000, // Recurrencia en ms del job
-  delay: 1000, // Tiempo de espera
-  limit: 10000 // Límite de repeticiones del job
+  frequency: 5000,       // Recurrencia en ms del job
+  delay: 1000,           // Tiempo de espera
+  limit: 10000           // Límite de repeticiones del job
 };
 ```
 
@@ -99,14 +99,13 @@ En algunos casos es necesario tener control de lo que ocurre luego de la ejecuci
 ```js
 import { initQueue } from '@rokketlabs/simple-bull';
 
+const onSuccess = ({ result, job, successMessage }) => {}
+const onFail =  ({ err, job, errorMessage }) => {}
+
 initQueue({
   queueName: 'email-queue',
-  onSuccess: ({ result, job, successMessage }) => {
-    // execute code
-  },
-  onFail: ({ err, job, errorMessage }) => {
-    // execute code
-  },
+  onSuccess,
+  onFail,
   jobs: [sendEmail, checkEmail]
 });
 ```
@@ -118,18 +117,17 @@ Cada vez que `sendEmail` y `checkEmail` se hayan ejecutado, alguno de los dos ho
 ```js
 import checkEmail from './checkEmail';
 
+const onSuccess = ({ result, job, successMessage }) => {}
+const onFail =  ({ err, job, errorMessage }) => {}
+
 export default {
-  name: 'checkEmail', // Nombre del job
+  name: 'checkEmail',    // Nombre del job
   processor: checkEmail, // Función que se ejecuta el job
-  frequency: 5000, // Recurrencia en ms del job
-  delay: 1000, // Tiempo de espera
-  limit: 10000, // Límite de repeticiones del job
-  onSuccess: ({ result, job, successMessage }) => {
-    // execute code
-  },
-  onFail: ({ err, job, errorMessage }) => {
-    // execute code
-  }
+  frequency: 5000,       // Recurrencia en ms del job
+  delay: 1000,           // Tiempo de espera
+  limit: 10000,          // Límite de repeticiones del job
+  onSuccess,
+  onFail
 };
 ```
 

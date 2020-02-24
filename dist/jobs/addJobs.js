@@ -6,7 +6,11 @@ require("core-js/modules/es.symbol.description");
 
 require("core-js/modules/es.symbol.iterator");
 
+require("core-js/modules/es.array.concat");
+
 require("core-js/modules/es.array.iterator");
+
+require("core-js/modules/es.function.name");
 
 require("core-js/modules/es.object.define-property");
 
@@ -26,6 +30,8 @@ exports["default"] = _default;
 require("regenerator-runtime/runtime");
 
 var _addJob = _interopRequireDefault(require("./addJob"));
+
+var _signale = _interopRequireDefault(require("signale"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -48,70 +54,76 @@ function _ref2() {
         switch (_context.prev = _context.next) {
           case 0:
             queue = _ref.queue, jobs = _ref.jobs;
+
+            _signale["default"].pending("Adding ".concat(jobs.length, " jobs to ").concat(queue.name, " queue"));
+
             _iteratorNormalCompletion = true;
             _didIteratorError = false;
             _iteratorError = undefined;
-            _context.prev = 4;
+            _context.prev = 5;
             _iterator = jobs[Symbol.iterator]();
 
-          case 6:
+          case 7:
             if (_iteratorNormalCompletion = (_step = _iterator.next()).done) {
-              _context.next = 13;
+              _context.next = 15;
               break;
             }
 
             job = _step.value;
-            _context.next = 10;
+            _context.next = 11;
             return (0, _addJob["default"])({
               queue: queue,
               job: job
             });
 
-          case 10:
-            _iteratorNormalCompletion = true;
-            _context.next = 6;
-            break;
+          case 11:
+            !job.frequency ? _signale["default"].success("[".concat(job.name, "] Event job added successful")) : _signale["default"].success("[".concat(job.name, "] Frequency job added successful"));
 
-          case 13:
-            _context.next = 19;
+          case 12:
+            _iteratorNormalCompletion = true;
+            _context.next = 7;
             break;
 
           case 15:
-            _context.prev = 15;
-            _context.t0 = _context["catch"](4);
+            _context.next = 21;
+            break;
+
+          case 17:
+            _context.prev = 17;
+            _context.t0 = _context["catch"](5);
             _didIteratorError = true;
             _iteratorError = _context.t0;
 
-          case 19:
-            _context.prev = 19;
-            _context.prev = 20;
+          case 21:
+            _context.prev = 21;
+            _context.prev = 22;
 
             if (!_iteratorNormalCompletion && _iterator["return"] != null) {
               _iterator["return"]();
             }
 
-          case 22:
-            _context.prev = 22;
+          case 24:
+            _context.prev = 24;
 
             if (!_didIteratorError) {
-              _context.next = 25;
+              _context.next = 27;
               break;
             }
 
             throw _iteratorError;
 
-          case 25:
-            return _context.finish(22);
-
-          case 26:
-            return _context.finish(19);
-
           case 27:
+            return _context.finish(24);
+
+          case 28:
+            return _context.finish(21);
+
+          case 29:
           case "end":
             return _context.stop();
         }
       }
-    }, _callee, null, [[4, 15, 19, 27], [20,, 22, 26]]);
+    }, _callee, null, [[5, 17, 21, 29], [22,, 24, 28]]);
   }));
   return _ref2.apply(this, arguments);
 }
