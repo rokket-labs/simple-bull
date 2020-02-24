@@ -2,7 +2,7 @@ import { successMessage } from '../logger'
 
 export default function ({ queue, jobs, queueOnSuccess }) {
   queue.on('completed', function (currentJob, result) {
-    console.log(currentJob.name, 'completed')
+    console.log(result, 'this is the result')
     const findJobByName = ({ name }) => name === currentJob.name
     const firedJob = jobs.find(findJobByName)
 

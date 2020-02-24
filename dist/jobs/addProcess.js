@@ -38,10 +38,9 @@ function _default(_ref) {
           switch (_context.prev = _context.next) {
             case 0:
               (0, _logger.pendingMessage)(job, 'executing job processor');
-              _context.next = 3;
-              return processor(job.data);
+              return _context.abrupt("return", processor(job.data));
 
-            case 3:
+            case 2:
             case "end":
               return _context.stop();
           }

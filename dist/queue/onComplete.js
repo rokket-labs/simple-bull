@@ -18,7 +18,7 @@ function _default(_ref) {
       jobs = _ref.jobs,
       queueOnSuccess = _ref.queueOnSuccess;
   queue.on('completed', function (currentJob, result) {
-    console.log(currentJob.name, 'completed');
+    console.log(result, 'this is the result');
 
     var findJobByName = function findJobByName(_ref2) {
       var name = _ref2.name;
