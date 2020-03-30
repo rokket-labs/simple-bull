@@ -2,7 +2,6 @@ import { errorMessage } from '../logger'
 
 export default function ({ queue, jobs, queueOnFail }) {
   queue.on('failed', function (currentJob, err) {
-    console.log('simple bull failing')
     const findJobByName = ({ name }) => name === currentJob.name
     const firedJob = jobs.find(findJobByName)
 
