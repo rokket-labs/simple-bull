@@ -48,9 +48,7 @@ function _ref2() {
 
             _signale["default"].pending('Creating queue and connecting with redis');
 
-            queue = new _bull["default"](queueName, {
-              redis: _redisConf["default"]
-            });
+            queue = new _bull["default"](queueName, (0, _redisConf["default"])());
             _context.next = 5;
             return queue.empty();
 
