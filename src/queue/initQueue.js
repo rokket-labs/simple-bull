@@ -1,22 +1,15 @@
 import Bull from 'bull'
-import redisConf from '../redisConf'
+import redisConnection from '../redisConnection'
 
 import signale from 'signale'
 import addJobs from '../jobs/addJobs'
 import onComplete from './onComplete'
 import onFailed from './onFailed'
 
-export default async function ({
-  queueName,
-  jobs,
-  onSuccess,
-  onFail
-}) {
+export default async function ({ queueName, jobs, onSuccess, onFail, redis }) {
   signale.pending('Creating queue and connecting with redis')
 
-  const redis = redisConf()
-
-  const queue = new Bull(queueName, redis)
+  const queue = new Bull(queueName, redisConnection(redis))
 
   await queue.empty()
 

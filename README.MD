@@ -1,33 +1,24 @@
 # Simple Bull 🐂
 
-Create jobs and microservices very easy with bull behind the scene
+Create jobs stably, quickly and easily
 
-# Motivación
+# Motivation
 
-Bull.js es la librería más completa para hacer workers en node, es bastante ligera y ocupa un sistema de eventos que permite manipular un job en todas las etapas, sin embargo, programar un job de forma correcta en bull es un poco complejo, esta librería la hice con el fin de reducir esa dificultad, pero conservar al máximo las funcionalidades de bull.
-También esta librería esta pensada para poder programar microservicios en Node siguiendo buenas prácticas y manteniendo el código lo más ordenado posible.
+Bull.js is a great library to programming jobs on NodeJS, it is quite light and occupies an event system that allows manipulating a job in all its stages. But, properly programming a job in Bull is a bit complex.
+
+I made this library in order to reduce this difficulty, but to preserve the bull's functionality and good practices as much as possible.
+
 
 # Why use Simple Bull?
 
 🌟 Very easy to implement
 🔄 Stables recurrent jobs
-🔎 Great logging system in your jobs
 🛰 Remote event jobs 
+🔎 Great log system
 
-# Prerequisitos
+# Install
 
-Simple bull es una librería de Node que usa Redis como sistema de cola, por lo tanto, antes de comenzar asegurate de tener Redis instalado de forma local o uno de forma remota.
-Debes configurar las siguientes variables de ambiente en tu proyecto:
-
-```sh
-export REDIS_HOST='your-redis-host'
-export REDIS_PORT='your-redis-port'
-export REDIS_PASSWORD='your-redis-pass'
-```
-
-# Instalación
-
-Usando npm:
+Versions < 1.4.x
 
 ```
 npm install --save @rokketlabs/simple-bull
@@ -39,9 +30,75 @@ Usando yarn:
 yarn add @rokketlabs/simple-bull
 ```
 
-# Uso
+<!-- Versions > 1.4.x
 
-El core de todos los workers son las colas, estas se registran en redis, y a cada cola se le pueden asignar todos los workers que desees:
+```
+npm install --save simple-bull
+```
+
+Usando yarn:
+
+```
+yarn add simple-bull
+``` -->
+
+# Usage
+
+Simple Bull trabaja con colas, las cuales se registran y subscriben en redis, cada Job es una función de Node que se dispara de forma recurrente o remota.
+
+####  Redis Connection
+Simple Bull es muy flexible a la hora de configurar la conexión a redis. Además reusa y deja cerrada las conexiones para garantizar un uso correcto del Redis.
+
+#####  Configuración con Variables de Ambiente
+Puedes configurar por medio de variables de ambiente o archivos .env los parámetros de conexión de tu Redis.
+```sh
+# You have 2 ways to stablish connection with your redis
+
+# Redis connection params without SSL
+export REDIS_HOST='localhost'
+export REDIS_PORT='13376'
+export REDIS_PASSWORD='youpass'  [optional]
+export REDIS_USERNAME='username' [optional]
+
+# Or, Redis url without ssl
+export REDIS_STRING_URL='redis://username:password@host:port'
+
+# If your connection uses SSL you can use the two previous ways
+export REDIS_HOST='localhost'
+export REDIS_PORT='13376'
+export REDIS_PASSWORD='youpass'  
+export REDIS_USERNAME='username' 
+export REDIS_SSL=true
+
+# Redis connection params with SSL
+export REDIS_STRING_URL='rediss://username:password@host:port'
+```
+#####  Configuración desde el código
+Alternativamente también puedes configurar los parámetros de conexión al Redis al momento de inicializar una cola de la siguiente forma:
+```js
+import { initQueue } from '@rokketlabs/simple-bull';
+
+initQueue({
+  queueName: 'email-queue',
+  jobs: [sendEmail, checkEmail],
+  redis: {
+    host: 'your-redis-host',
+    port: 'your-redis-url',
+    username: 'username',
+    password: 'username',
+    ssl: true || false
+  }
+});
+
+initQueue({
+  queueName: 'email-queue',
+  jobs: [sendEmail, checkEmail],
+  redis: {
+    url: 'redis://username:password@host:port',
+  }
+});
+```
+
 
 #### Registro de colas
 
@@ -154,17 +211,18 @@ errorMessage(job: JobObject, message: string)
 ```
 
 # TODO:
-
-- [ ] Implementar tests.
-- [ ] Implementar tests coverage.
-- [ ] Documentación en Inglés.
-- [ ] Reusar las conexiones en redis.
-- [ ] Implementar jobs concurrentes.
-- [ ] Implementar timeLimit.
+- [x] Reuse Redis connections.
+- [ ] Test Implementation.
+- [ ] Test Coverage.
+- [ ] English Documentation [WIP].
+- [ ] Redis Cluster connection.
+- [ ] Concurrent Jobs.
+- [ ] timeLimit implementation.
+- [ ] onProgress Hook.
 
 # Hecho con:
 
-- [Bull](https://github.com/OptimalBits/bull) - Libería de Jobs
+- [Bull](https://github.com/OptimalBits/bull) - Bull jobs library
 
 # Autor
 
