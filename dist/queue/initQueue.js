@@ -39,25 +39,26 @@ function _ref2() {
   _ref2 = _asyncToGenerator(
   /*#__PURE__*/
   regeneratorRuntime.mark(function _callee(_ref) {
-    var queueName, jobs, queueOnSuccess, queueOnFail, queue;
+    var queueName, jobs, queueOnSuccess, onFail, redis, queue;
     return regeneratorRuntime.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
-            queueName = _ref.queueName, jobs = _ref.jobs, queueOnSuccess = _ref.queueOnSuccess, queueOnFail = _ref.queueOnFail;
+            queueName = _ref.queueName, jobs = _ref.jobs, queueOnSuccess = _ref.queueOnSuccess, onFail = _ref.onFail;
 
             _signale["default"].pending('Creating queue and connecting with redis');
 
-            queue = new _bull["default"](queueName, (0, _redisConf["default"])());
-            _context.next = 5;
+            redis = (0, _redisConf["default"])();
+            queue = new _bull["default"](queueName, redis);
+            _context.next = 6;
             return queue.empty();
 
-          case 5:
+          case 6:
             // Queue events
             (0, _onFailed["default"])({
               queue: queue,
               jobs: jobs,
-              queueOnFail: queueOnFail
+              onFail: onFail
             });
             (0, _onComplete["default"])({
               queue: queue,
@@ -67,13 +68,13 @@ function _ref2() {
 
             _signale["default"].success("Queue ".concat(queueName, " correctly created"));
 
-            _context.next = 10;
+            _context.next = 11;
             return (0, _addJobs["default"])({
               queue: queue,
               jobs: jobs
             });
 
-          case 10:
+          case 11:
           case "end":
             return _context.stop();
         }
