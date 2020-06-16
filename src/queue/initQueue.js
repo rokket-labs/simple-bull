@@ -9,7 +9,7 @@ import onFailed from './onFailed'
 export default async function ({
   queueName,
   jobs,
-  queueOnSuccess,
+  onSuccess,
   onFail
 }) {
   signale.pending('Creating queue and connecting with redis')
@@ -22,7 +22,7 @@ export default async function ({
 
   // Queue events
   onFailed({ queue, jobs, onFail })
-  onComplete({ queue, jobs, queueOnSuccess })
+  onComplete({ queue, jobs, onSuccess })
 
   signale.success(`Queue ${queueName} correctly created`)
 

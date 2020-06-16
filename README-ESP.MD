@@ -7,13 +7,6 @@ Create jobs and microservices very easy with bull behind the scene
 Bull.js es la librería más completa para hacer workers en node, es bastante ligera y ocupa un sistema de eventos que permite manipular un job en todas las etapas, sin embargo, programar un job de forma correcta en bull es un poco complejo, esta librería la hice con el fin de reducir esa dificultad, pero conservar al máximo las funcionalidades de bull.
 También esta librería esta pensada para poder programar microservicios en Node siguiendo buenas prácticas y manteniendo el código lo más ordenado posible.
 
-# Why use Simple Bull?
-
-🌟 Very easy to implement
-🔄 Stables recurrent jobs
-🔎 Great logging system in your jobs
-🛰 Remote event jobs 
-
 # Prerequisitos
 
 Simple bull es una librería de Node que usa Redis como sistema de cola, por lo tanto, antes de comenzar asegurate de tener Redis instalado de forma local o uno de forma remota.
