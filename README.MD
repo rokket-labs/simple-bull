@@ -11,10 +11,10 @@ I made this library in order to reduce this difficulty, but to preserve the bull
 
 # Why use Simple Bull?
 
-🌟 Very easy to implement
-🔄 Stables recurrent jobs
-🛰 Remote event jobs 
-🔎 Great log system
+- 🌟 Very easy to implement
+- 🔄 Stables recurrent jobs
+- 🛰 Remote event jobs 
+- 🔎 Great log system
 
 # Install
 
