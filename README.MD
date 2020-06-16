@@ -18,29 +18,27 @@ I made this library in order to reduce this difficulty, but to preserve the bull
 
 # Install
 
-Versions < 1.4.x
-
-```
-npm install --save @rokketlabs/simple-bull
-```
-
-Usando yarn:
-
-```
-yarn add @rokketlabs/simple-bull
-```
-
-<!-- Versions > 1.4.x
+Versions > 1.3.3
 
 ```
 npm install --save simple-bull
-```
 
-Usando yarn:
+- Or - 
 
-```
 yarn add simple-bull
-``` -->
+```
+
+Versions < 1.3.3
+
+```
+npm install --save @rokketlabs/simple-bull
+
+- Or - 
+
+yarn add @rokketlabs/simple-bull
+```
+
+
 
 # Usage
 
