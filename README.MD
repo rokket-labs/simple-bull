@@ -1,6 +1,6 @@
-# Simple Bull
+# Simple Bull 🐂
 
-Librería para crear Jobs super estables de forma muy simple
+Create jobs and microservices very easy with bull behind the scene
 
 # Motivación
 
