@@ -1,10 +1,8 @@
 import Bull from 'bull'
-import redis from '../redisConf'
+import redisConnection from '../redisConnection'
 
-export default async function ({ queueName, jobName, data }) {
-  // Open redis connection
-  const queue = new Bull(queueName, { redis })
+export default async function ({ queueName, jobName, data, redis }) {
+  // Subscribe to queue
+  const queue = new Bull(queueName, redisConnection(redis))
   await queue.add(jobName, data)
-  // Close redis connection
-  queue.close()
 }
