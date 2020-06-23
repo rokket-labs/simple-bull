@@ -8,17 +8,19 @@ const envSsl = process.env.REDIS_SSL
 const stringUrl = process.env.REDIS_STRING_URL
 
 // This will be deprecated in version 1.4.0
-const getUrlFromEnv = () => {
+export const getUrlFromEnv = () => {
   if (stringUrl) return stringUrl
   if (!host && !port) throw new Error(`You must configure redis connection`)
   const conn = envSsl ? `rediss` : `redis`
-  return `${conn}://${username}:${password}@${host}:${port}`
+  if (username || password) return `${conn}://${username}:${password}@${host}:${port}`
+  return `${conn}://${host}:${port}`
 }
 
-const getUrlFromConfig = ({ username, password, host, port, url, ssl }) => {
+export const getUrlFromConfig = ({ username, password, host, port, url, ssl }) => {
   if (url) return url
   const conn = ssl ? 'rediss' : 'redis'
-  return `${conn}://${username}:${password}@${host}:${port}`
+  if (username || password) return `${conn}://${username}:${password}@${host}:${port}`
+  return `${conn}://${host}:${port}`
 }
 
 export default function (redisConfig) {
