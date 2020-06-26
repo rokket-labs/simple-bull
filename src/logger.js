@@ -1,37 +1,28 @@
 import signale from 'signale'
 
-const getUTCDate = () => {
-  let now = new Date()
-  const month = now.getUTCMonth() + 1 // months from 1-12
-  const day = now.getUTCDate()
-  const year = now.getUTCFullYear()
-  return `${year}-${month}-${day}`
-}
+signale.config({
+  displayTimestamp: true,
+  displayDate: true,
+  underlineMessage: true
 
-const getUTCTime = () => {
-  let now = new Date()
-  const minutes = now.getMinutes()
-  const hours = now.getHours()
-  const seconds = now.getSeconds()
-  return `${hours}:${minutes}:${seconds}`
-}
+})
 
 const successMessage = (job, message) => {
-  const msg = signale.scope(getUTCDate(), getUTCTime(), job.name)
-  msg.success({
+  const msg = signale.scope(job.name)
+  return msg.success({
     message: message || 'executed successfully'
   })
 }
 
 const pendingMessage = (job, message) => {
-  const msg = signale.scope(getUTCDate(), getUTCTime(), job.name)
-  msg.pending({
+  const msg = signale.scope(job.name)
+  return msg.pending({
     message
   })
 }
 const errorMessage = (job, message) => {
-  const msg = signale.scope(getUTCDate(), getUTCTime(), job.name)
-  msg.fatal(message)
+  const msg = signale.scope(job.name)
+  return msg.fatal(message)
 }
 
 export { successMessage, pendingMessage, errorMessage }
